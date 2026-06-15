@@ -41,8 +41,8 @@ Before running this project, ensure the following requirements are met:
 Clone or download the repository:
 
 ```bash
-git clone https://github.com/your-username/powerbi-data-transformation-project.git
-```
+git clone 
+```https://github.com/dhivyamohan92/Power-BI-Data-Transformation-Data-Modeling---Ecommerce
 
 ### Step 2: Open Power BI File
 
