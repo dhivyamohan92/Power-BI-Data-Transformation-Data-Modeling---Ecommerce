@@ -1,215 +1,423 @@
-# Power BI Assignment 1 – Data Transformation & Data Modeling
+# 📊 Project Title: E-Commerce Sales Data Transformation & Data Modeling Using Power BI
 
-## Project Title
-
-E-Commerce Sales Data Transformation and Data Modeling using Power BI
-
-## Overview
-
-This project demonstrates the process of importing, cleaning, transforming, integrating, aggregating, and modeling E-commerce sales data using Power BI and Power Query Editor. The objective is to prepare raw sales data for business analysis by applying data preparation techniques and establishing relationships between multiple datasets.
+A Power BI project that transforms raw E-Commerce sales data into a clean, structured, and analysis-ready data model through data preparation, transformation, aggregation, and relationship modeling.
 
 ---
 
-## Description
+# 📑 Table of Contents
 
-The project uses three datasets: List of Orders, Order Details, and Sales Target. Various data transformation techniques were performed including row limiting, data type conversion, text formatting, custom column creation, conditional column creation, table merging, sorting, filtering, and aggregation. Data modeling was implemented by creating relationships between tables using Order ID and Category fields.
-
-The final output is a clean, structured, and analysis-ready Power BI data model that supports reporting and business decision-making.
-
----
-
-# Getting Started
-
-## Dependencies
-
-Before running this project, ensure the following requirements are met:
-
-* Windows 10 or later
-* Power BI Desktop
-* CSV Dataset Files
-
-  * List of Orders.csv
-  * Order Details.csv
-  * Sales Target.csv
+* Project Overview
+* Data Sources & Architecture
+* Data Transformation (ETL)
+* Data Model & DAX
+* Dashboard Features
+* Key Insights
+* How To Use
 
 ---
 
-## Installing
+# 🎯 Project Overview
 
-### Step 1: Download the Project
+## Business Problem
 
-Clone or download the repository:
+E-Commerce businesses generate large amounts of transactional data from customer orders, product sales, and sales targets. Raw datasets often contain inconsistencies and require transformation before meaningful business analysis can be performed.
 
-```bash
-git clone 
-```https://github.com/dhivyamohan92/Power-BI-Data-Transformation-Data-Modeling---Ecommerce
+## Objective
 
-### Step 2: Open Power BI File
+The objective of this project is to prepare, clean, transform, integrate, and model E-Commerce sales data using Power BI and Power Query Editor. The final data model enables accurate reporting, aggregation, and business analysis.
 
-Open the `.pbix` file using Power BI Desktop.
+## Target Audience
 
-### Step 3: Verify Dataset Paths
-
-If required:
-
-* Update CSV file locations
-* Refresh the data source connections
+* Business Analysts
+* Sales Managers
+* Data Analysts
+* Students Learning Power BI
+* Business Intelligence Professionals
 
 ---
 
-## Executing Program
+# 🗃️ Data Sources & Architecture
 
-### Open the Project
+## Source Systems
 
-1. Launch Power BI Desktop.
-2. Open the provided `.pbix` file.
-3. Click **Refresh** to load data.
+The project uses three CSV files:
 
-### Power Query Transformations Performed
+### List of Orders
 
-* Imported datasets
-* Restricted List of Orders to first 500 rows
-* Converted data types
-* Formatted Customer Name column
-* Created Location column
-* Created Profit Margin column
-* Created Profit Status column
-* Merged tables using Order ID
-* Sorted and filtered records
-* Performed grouping and aggregation
-* Created relationships between tables
+Contains customer and order information:
 
-### Refresh Data
+* Order ID
+* Order Date
+* Customer Name
+* City
+* State
+
+### Order Details
+
+Contains product-level transaction details:
+
+* Order ID
+* Category
+* Sub-Category
+* Quantity
+* Amount
+* Profit
+
+### Sales Target
+
+Contains category-wise monthly sales targets:
+
+* Category
+* Month of Order Date
+* Target
+
+---
+
+## Data Volume
+
+| Dataset        | Records                  |
+| -------------- | ------------------------ |
+| List of Orders | 500 (after row limiting) |
+| Order Details  | 1500                     |
+| Sales Target   | 36                       |
+
+---
+
+## Storage Mode
+
+**Import Mode**
+
+All datasets were imported into Power BI Desktop and transformed using Power Query Editor.
+
+---
+
+# ⚙️ Data Transformation (ETL)
+
+## Tool Used
+
+**Power Query Editor**
+
+## Key Cleanups & Transformations
+
+### Data Import
+
+* Imported List of Orders.csv
+* Imported Order Details.csv
+* Imported Sales Target.csv
+
+### Row Limiting
+
+* Restricted List of Orders to the first 500 rows.
+
+### Data Type Conversion
+
+* Order Date → Date
+* Amount → Fixed Decimal Number
+* Target → Fixed Decimal Number
+
+### Text Formatting
+
+* Converted Customer Name to Proper Case for consistent capitalization.
+
+### Custom Column Creation
+
+#### Location
+
+Merged City and State columns.
+
+Formula:
 
 ```text
-Home → Refresh
+Location = [City] & ", " & [State]
+```
+
+Example:
+
+```text
+Chennai, Tamil Nadu
+```
+
+#### Profit Margin
+
+Created using:
+
+```text
+Profit Margin = Profit / Amount
+```
+
+Formatted as Percentage.
+
+### Conditional Column
+
+Created Profit Status column:
+
+```text
+Profit < 0  → Loss
+Profit = 0  → Break-Even
+Profit > 0  → Profit
+```
+
+### Data Integration
+
+Merged:
+
+* List of Orders
+* Order Details
+
+Join Key:
+
+```text
+Order ID
+```
+
+Output Table:
+
+```text
+Orders Data
+```
+
+### Data Quality Validation
+
+* Checked for missing values using Column Quality.
+* Checked for duplicate records.
+* No missing values or duplicate records were found in the final filtered dataset.
+
+### Sorting & Filtering
+
+* Sorted Orders Data by Order Date (Descending).
+* Filtered records for Tamil Nadu analysis.
+
+### Aggregation
+
+Created summary tables for:
+
+* Total Order Count
+* Average Profit by Category
+* Total Amount by Sub-Category
+* Total Target by Month
+
+---
+
+# 🧠 Data Model & DAX
+
+## Model Type
+
+**Relational Data Model**
+
+## Fact Table
+
+### Order Details
+
+Contains transactional sales information:
+
+* Order ID
+* Category
+* Sub-Category
+* Quantity
+* Amount
+* Profit
+
+## Dimension Tables
+
+### List of Orders
+
+Contains:
+
+* Order ID
+* Customer Name
+* City
+* State
+* Order Date
+
+### Sales Target
+
+Contains:
+
+* Category
+* Month of Order Date
+* Target
+
+---
+
+## Relationships
+
+### Relationship 1
+
+```text
+List of Orders[Order ID]
+        ↓
+Order Details[Order ID]
+```
+
+Cardinality:
+
+```text
+One-to-Many
+```
+
+### Relationship 2
+
+```text
+Order Details[Category]
+        ↓
+Sales Target[Category]
+```
+
+Cardinality:
+
+```text
+Many-to-One
+```
+
+All relationships were validated using **Manage Relationships** and set as Active.
+
+---
+
+## Calculated Columns
+
+### Profit Margin
+
+```text
+Profit Margin = Profit / Amount
+```
+
+### Profit Status
+
+```text
+IF Profit < 0 → Loss
+IF Profit = 0 → Break-Even
+IF Profit > 0 → Profit
 ```
 
 ---
 
-# Help
+# 🖥️ Dashboard Features
 
-## Common Issues
+## Page 1: Data Preparation Overview
 
-### Data Source Not Found
+Displays:
 
-If Power BI cannot locate the CSV files:
-
-1. Go to Transform Data.
-2. Open Data Source Settings.
-3. Update the file paths.
-4. Refresh the dataset.
-
-### Relationship Errors
-
-If relationships become inactive:
-
-1. Open Model View.
-2. Select Manage Relationships.
-3. Verify:
-
-   * Matching columns
-   * Correct cardinality
-   * Active relationship status
-
-### Data Type Errors
-
-Ensure:
-
-* Order Date = Date
-* Amount = Fixed Decimal Number
-* Target = Fixed Decimal Number
-
----
-
-# Authors
-
-### Contributor
-
-Dhivya Mohan
-
-GitHub Profile:
-@Dhivya Mohan
-
----
-
-# Version History
-
-## Version 0.2
-
-* Added data modeling relationships
-* Implemented aggregations
-* Added custom and conditional columns
-* Improved data quality validation
-
-## Version 0.1
-
-* Initial project setup
 * Imported datasets
-* Performed basic transformations
+* Data transformation workflow
+* Data quality validation summary
+
+## Page 2: Aggregation Analysis
+
+Displays:
+
+* Total Orders
+* Average Profit by Category
+* Total Amount by Sub-Category
+* Monthly Sales Targets
+
+## Page 3: Data Model View
+
+Displays:
+
+* Table relationships
+* Data model structure
+* Active relationship connections
 
 ---
 
-# License
+## Design Features
 
-This project is created for educational and academic purposes.
+* Clean and structured layout
+* Consistent formatting
+* Interactive filtering capabilities
+* Business-oriented data model
 
 ---
 
-# Acknowledgments
+# 💡 Key Insights
 
-Special thanks to:
+## Trend A
+
+The merged Orders Data table provides a complete view of customer orders and product transactions, enabling unified business analysis.
+
+## Trend B
+
+Category-level profit analysis helps identify product categories contributing the highest profitability.
+
+## Trend C
+
+Sub-category aggregation highlights the top revenue-generating product groups.
+
+## Recommendation
+
+Organizations should maintain structured relationships between sales, customer, and target datasets to improve reporting accuracy and support data-driven decision-making.
+
+---
+
+# 🚀 How To Use
+
+## Prerequisites
+
+Ensure the following are installed:
 
 * Power BI Desktop
-* Microsoft Power Query Editor
-* E-Commerce Sales Dataset
-* Course Instructors and Mentors
-
-Resources referenced:
-
-* Power BI Documentation
-* Power Query Documentation
-* GitHub README Best Practices
-
+* Windows 10/11
 
 ---
 
-## Project Structure
+## Open the Project
+
+1. Download or clone the repository.
+2. Open the `.pbix` file in Power BI Desktop.
+3. Verify data source file paths.
+4. Click **Refresh** to load data.
+
+---
+
+## Data Refresh
+
+If dataset locations change:
 
 ```text
-PowerBI-Assignment-1/
-│
-├── Dataset/
-│   ├── List of Orders.csv
-│   ├── Order Details.csv
-│   └── Sales Target.csv
-│
-├── PowerBI/
-│   └── PowerBI_Assignment_1.pbix
-│
-├── Documentation/
-│   ├── Project_Report.pdf
-│   ├── Data_Model_View.png
-│   └── Screenshots/
-│
-└── README.md
+Home → Transform Data → Data Source Settings
 ```
+
+Update the CSV file locations and refresh the report.
 
 ---
 
-## Key Skills Demonstrated
+# 👩‍💻 Author
 
-* Data Import and Preparation
-* Data Cleaning and Validation
+**Dhivya Mohan**
+
+Aspiring Data Analyst | Power BI Developer
+
+### Skills Demonstrated
+
+* Power BI
+* Power Query Editor
+* Data Cleaning
 * Data Transformation
-* Custom and Conditional Columns
-* Data Integration using Joins
-* Data Aggregation and Summarization
-* Data Modeling and Relationship Management
-* Business Data Interpretation
+* Data Modeling
+* Data Aggregation
+* Business Intelligence Reporting
 
 ---
 
-## Project Outcome
+# 📌 Version History
 
-Successfully transformed raw E-commerce sales data into a structured Power BI data model by applying data preparation, cleaning, integration, aggregation, and relationship modeling techniques. The final model supports efficient reporting and business analysis.
+## Version 1.0
+
+* Imported datasets
+* Applied Power Query transformations
+* Created custom and conditional columns
+* Merged datasets using joins
+* Performed aggregations
+* Created data model relationships
+* Completed project documentation
+
+---
+
+# 🙏 Acknowledgments
+
+* Microsoft Power BI
+* Power Query Editor
+* E-Commerce Sales Dataset
+* Data Analytics (DA) Module 2 Assignment
+* Power BI Learning Community
+* Open-source Data Analytics Resources
