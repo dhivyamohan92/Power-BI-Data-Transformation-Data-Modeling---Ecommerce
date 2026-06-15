@@ -26,7 +26,7 @@ Sales Target.csv
 Installing
 Step 1: Download the Project
 Clone or download the repository:
-git clone https://github.com/your-username/powerbi-data-transformation-project.git
+git clone https:[//github.com/your-username/powerbi-data-transformation-project.git](https://github.com/dhivyamohan92/Power-BI-Data-Transformation-Data-Modeling---Ecommerce)
 Step 2: Open Power BI File
 Open the .pbix file using Power BI Desktop.
 Step 3: Verify Dataset Paths
